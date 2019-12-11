@@ -745,7 +745,7 @@ install.packages("ggmap")
 library("ggmap")
 
 #Set your API Key
-ggmap::register_google(key = "AIzaSyARkLVdzYUmbxDt1pYNMcJcwuJQvAgb6NE")
+ggmap::register_google(key = "xxxxxxxx")
 
 p <- ggmap(get_googlemap(center = c(lon = -122.393990, lat = 37.781555),
                          zoom = 11, scale = 2,

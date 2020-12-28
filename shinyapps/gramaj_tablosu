@@ -1,0 +1,40 @@
+library(shiny)
+library(dplyr)
+library(googlesheets4)
+
+
+
+gs4_deauth() ##authentication 
+df <- read_sheet("https://docs.google.com/spreadsheets/d/1Ji2BqOUyV63lvicD3XC_vpsnyDk171mtNtfTNWBN6pk/edit?usp=sharing") ##insert data
+
+
+server <- function(input, output) {
+  
+  
+  ## df <- read_sheet("https://docs.google.com/spreadsheets/d/1Ji2BqOUyV63lvicD3XC_vpsnyDk171mtNtfTNWBN6pk/edit?usp=sharing") ##insert data
+  
+  
+  output$table <- renderTable(df %>%
+                                filter(YEMEK_ADI == input$food) %>%
+                                mutate(GRAMAJ * input$number) %>%
+                                rename('Kilo' = 'GRAMAJ * input$number') %>%
+                                select(-c(YEMEK_ADI, GRAMAJ, TÜR)))
+  
+
+}
+
+ui <- fluidPage( 
+  titlePanel("Gramaj Tablosu"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("food", "Yemek tarifi seçiniz:", selected = "", choices = (df$YEMEK_ADI)),
+      numericInput("number", "Kaç kişilik?", min = 1, max = 3000, value = 200)),
+    mainPanel(tableOutput('table'))
+  )
+)
+
+
+
+
+app <- shinyApp(ui, server)
+shinyApp(ui, server)
